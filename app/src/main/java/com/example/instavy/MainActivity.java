@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,15 +17,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         btnTakePic = findViewById(R.id.btnTakePic);
         ivPostImage = findViewById(R.id.ivPostImage);
 
-//        queryPosts();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,42 +145,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void queryPosts() {
-        // Specify which class to query
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if(e != null){
-                    Log.e(TAG, "issue with getting posts",e);
-                }
-                for(Post post: posts){
-                    Log.i(TAG,"Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
-                }
-            }
-        });
 
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(item.getItemId() == R.id.logOut){
-            ParseUser.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            Intent i = new Intent(MainActivity.this,LoginActivity.class);
-            startActivity(i);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

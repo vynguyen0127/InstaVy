@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,7 +25,7 @@ import java.util.List;
 public class FeedActivity extends AppCompatActivity {
 
     public static final String TAG = "FeedActivity";
-
+    public static final int UPLOAD_ACTIVITY_CODE = 45;
     RecyclerView rvPosts;
     ImageButton ibUpload;
     List<Post> allPosts;
@@ -36,6 +37,20 @@ public class FeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+//
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setIcon(R.drawable.nux_dayone_landing_logo);
+//        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        // Find the toolbar view inside the activity layout
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -74,6 +89,7 @@ public class FeedActivity extends AppCompatActivity {
         queryPosts();
     }
 
+
     private void queryPosts() {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
@@ -99,6 +115,7 @@ public class FeedActivity extends AppCompatActivity {
                 }
 
                 // save received posts to list and notify adapter of new data
+                allPosts.clear();
                 allPosts.addAll(posts);
                 adapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);

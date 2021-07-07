@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 
+import java.util.Date;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -63,18 +65,35 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvUsername;
         ImageView ivImage;
         TextView tvDescription;
+        ImageButton ibLike;
+        ImageButton ibComment;
+        ImageButton ibDM;
+        ImageView ivProfile;
+        TextView tvUsername2;
+        TextView tvCreatedAt;
+        ImageButton ibSave;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            ibLike = itemView.findViewById(R.id.ibLike);
+            ibComment = itemView.findViewById(R.id.ibComment);
+            ibDM = itemView.findViewById(R.id.ibDM);
+            ivProfile = itemView.findViewById(R.id.ivProfile);
+            tvUsername2 = itemView.findViewById(R.id.tvUsername2);
+            tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
+            ibSave = itemView.findViewById(R.id.ibSave);
+
             itemView.setOnClickListener(this);
         }
 
         public void bind(Post post) {
             tvUsername.setText(post.getUser().getUsername());
             tvDescription.setText(post.getDescription());
+            tvUsername2.setText(post.getUser().getUsername());
+
             ParseFile image = post.getImage();
 
             if (image != null) {
@@ -83,6 +102,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         .into(ivImage);
             }
 
+
+            Glide.with(context)
+                    .load(R.drawable.instagram_user_filled_24)
+                    .circleCrop()
+                    .into(ivProfile);
+
+            Date d = post.getCreatedAt();
+            tvCreatedAt.setText(post.calculateTimeAgo(d));
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!ibLike.isSelected())
+                        ibLike.setImageResource(R.drawable.ufi_heart_active);
+                    else
+                        ibLike.setImageResource(R.drawable.ufi_heart);
+                }
+            });
         }
 
         @Override

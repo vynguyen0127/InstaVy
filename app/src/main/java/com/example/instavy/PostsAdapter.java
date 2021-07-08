@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +61,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         posts.addAll(list);
         notifyDataSetChanged();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tvUsername;
@@ -72,6 +74,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvUsername2;
         TextView tvCreatedAt;
         ImageButton ibSave;
+        Boolean isLiked;
+        Boolean isSaved;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,6 +90,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
             ibSave = itemView.findViewById(R.id.ibSave);
 
+            isLiked = false;
+            isSaved = false;
             itemView.setOnClickListener(this);
         }
 
@@ -113,10 +119,32 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!ibLike.isSelected())
+                    if(!isLiked) {
                         ibLike.setImageResource(R.drawable.ufi_heart_active);
-                    else
+                        Toast.makeText(context, "Post liked!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
                         ibLike.setImageResource(R.drawable.ufi_heart);
+                        Toast.makeText(context, "Post unliked!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    isLiked = !isLiked;
+                }
+            });
+
+            ibSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!isSaved){
+                        ibSave.setImageResource(R.drawable.ufi_save_active);
+                        Toast.makeText(context,"Post saved!",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        ibSave.setImageResource(R.drawable.ufi_save);
+                        Toast.makeText(context,"Post unsaved!",Toast.LENGTH_SHORT).show();
+                    }
+
+                    isSaved = !isSaved;
                 }
             });
         }

@@ -109,6 +109,7 @@
         android:layout_marginBottom="5dp"
         tools:text="2 days ago" />
 
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

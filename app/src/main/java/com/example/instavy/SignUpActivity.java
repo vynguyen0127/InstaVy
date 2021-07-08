@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseException e) {
                         if(e == null){
-                            Intent i = new Intent(SignUpActivity.this, MainActivity.class);
+                            Intent i = new Intent(SignUpActivity.this, FeedActivity.class);
                             startActivity(i);
                             finish();
                         } else{
